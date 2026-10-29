@@ -5,7 +5,12 @@ import json
 
 HUB_HOST = "127.0.0.1"
 HUB_PORT = 8080
-POWER_USAGE = {"light": 10, "fan": 60, "thermostat": 1500, "tv": 120}
+POWER_USAGE = {
+    "light": 10,
+    "fan": 60,
+    "thermostat": 1500,
+    "tv": 120,
+}
 devices = {}
 
 
@@ -48,15 +53,16 @@ def set_temperature(device_name, value):
 
 
 def devices_in_room(room):
-    """Return the device names in a specified room."""
+    """Return device names in the specified room."""
     return [
-        name for name, info in devices.items()
+        name
+        for name, info in devices.items()
         if info["room"] == room
     ]
 
 
 def power_usage():
-    """Calculate the power consumption of active devices."""
+    """Calculate power consumption of active devices."""
     return sum(
         POWER_USAGE.get(info["kind"], 0)
         for info in devices.values()
@@ -93,10 +99,11 @@ def main():
     print("Current power use (W):", power_usage())
     print("Hub address:", hub_address())
     print("Light settings:", devices["Ceiling Light"]["settings"])
-    print(
-        "Devices on:",
-        [name for name, info in devices.items() if info["on"]],
-    )
+    active_devices = [
+        name for name, info in devices.items() if info["on"]
+    ]
+    print("Devices on:", active_devices)
+
     save_state()
 
 
